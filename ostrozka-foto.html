@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pracownia Ostróżka</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#f2ebdf; --paper:#fbf7f0; --ink:#17271e; --ink-2:#4a5a50; --line:#d9cdb9;
+  --leaf:#1f3b2d; --leaf-2:#2f5a43; --sage:#8fa98f; --kraft:#c49a6c; --kraft-2:#a87e52;
+  --accent:#3f51c8; --accent-2:#6f7fe6; --accent-ink:#fff; --ok:#2e7d4f; --warn:#b5551d;
+  --card:#fffdf8; --shadow:0 1px 2px rgba(23,39,30,.06),0 8px 28px rgba(23,39,30,.10);
+  --hero-bg:radial-gradient(120% 80% at 50% 0%,#fbf7f0 0%,#efe5d4 60%,#e5d8c2 100%);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1712; --paper:#13201a; --ink:#ece6da; --ink-2:#a9b5aa; --line:#2a3b31;
+  --leaf:#a9d0b4; --leaf-2:#7fb592; --sage:#6f8e76; --kraft:#b98c5e; --kraft-2:#9a7046;
+  --accent:#8e9cff; --accent-2:#b3bdff; --accent-ink:#0e1712; --ok:#6fd39a; --warn:#f0a070;
+  --card:#16251d; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --hero-bg:radial-gradient(120% 80% at 50% 0%,#1b2d23 0%,#111d17 60%,#0b130f 100%);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1712; --paper:#13201a; --ink:#ece6da; --ink-2:#a9b5aa; --line:#2a3b31;
+  --leaf:#a9d0b4; --leaf-2:#7fb592; --sage:#6f8e76; --kraft:#b98c5e; --kraft-2:#9a7046;
+  --accent:#8e9cff; --accent-2:#b3bdff; --accent-ink:#0e1712; --ok:#6fd39a; --warn:#f0a070;
+  --card:#16251d; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --hero-bg:radial-gradient(120% 80% at 50% 0%,#1b2d23 0%,#111d17 60%,#0b130f 100%);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:500;letter-spacing:-.01em;line-height:1.08;margin:0}
+h2{font-size:clamp(30px,6.4vw,52px)}
+h3{font-size:22px}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:72px}
+.kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.lead{color:var(--ink-2);font-size:17px;max-width:56ch;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:14px 22px;font-weight:700;background:var(--accent);color:var(--accent-ink);text-decoration:none;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 18px color-mix(in srgb,var(--accent) 35%,transparent);min-height:48px}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.leaf{background:var(--leaf);color:var(--bg);box-shadow:none}
+.btn.sm{padding:9px 14px;min-height:40px;font-size:14px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:9px 14px;font-size:14px;font-weight:600;white-space:nowrap;min-height:40px}
+.chip[aria-pressed="true"],.chip.on{background:var(--leaf);color:var(--bg);border-color:var(--leaf)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.demo-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.muted{color:var(--ink-2)}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:700;color:var(--ink-2)}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:var(--paper);border-radius:14px;padding:12px 14px;font-size:16px;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* top */
+.demo-bar{background:var(--leaf);color:var(--bg);font-size:12.5px;text-align:center;padding:7px 16px}
+header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+header.top .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-family:Fraunces,serif;font-size:22px;font-weight:600}
+.logo svg{width:30px;height:30px}
+.nav{display:none;gap:22px;margin-left:auto;font-size:14.5px;font-weight:600}
+.nav a{color:var(--ink);text-decoration:none}
+.top .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:transparent;display:grid;place-items:center}
+@media (min-width:900px){.nav{display:flex}.top .actions{margin-left:18px}}
+
+/* hero */
+.hero{height:230vh;position:relative;background:var(--hero-bg)}
+.hero-stick{position:sticky;top:62px;height:calc(100vh - 62px);height:calc(100svh - 62px);overflow:hidden;display:grid;grid-template-rows:auto 1fr;padding-top:22px}
+.hero-copy{text-align:center;position:relative;z-index:2}
+.hero h1{font-size:clamp(40px,10.5vw,92px);font-weight:400}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero .lead{margin:12px auto 0;font-size:16px;max-width:40ch}
+.hero-cta{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.hero-art{position:relative;min-height:0;display:grid;place-items:center}
+.hero-art svg{height:100%;max-height:560px;width:auto;max-width:100%;overflow:visible}
+.pc{transform-box:fill-box;transform-origin:50% 100%;will-change:transform}
+.scroll-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:12.5px;color:var(--ink-2);display:flex;gap:8px;align-items:center;transition:opacity .3s;white-space:nowrap}
+.scroll-hint i{width:18px;height:28px;border:1.5px solid var(--ink-2);border-radius:10px;position:relative}
+.scroll-hint i::after{content:"";position:absolute;left:50%;top:5px;width:3px;height:6px;border-radius:2px;background:var(--ink-2);transform:translateX(-50%);animation:sh 1.6s infinite}
+@keyframes sh{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,9px)}}
+.ready{position:absolute;bottom:22px;left:50%;transform:translate(-50%,16px);opacity:0;transition:.4s;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:10px 12px 10px 18px;display:flex;gap:12px;align-items:center;font-size:14px;white-space:nowrap;z-index:3}
+.ready.show{opacity:1;transform:translate(-50%,0)}
+.ready b{font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 25%,transparent)}
+
+/* seasonal */
+.season{margin-top:-1px;background:var(--leaf);color:var(--bg)}
+.season .wrap{padding-block:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.season p{flex:1 1 240px;font-size:15px}
+.season b{font-family:Fraunces,serif;font-size:19px;font-weight:500}
+.season .btn{background:var(--bg);color:var(--leaf);box-shadow:none}
+
+/* occasions + bouquets */
+.occ{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;margin-top:22px;scrollbar-width:none}
+.occ::-webkit-scrollbar{display:none}
+.grid-b{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:18px}
+.bq{overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,opacity .25s}
+.bq.fade{opacity:.28;transform:scale(.98)}
+.bq .ph{aspect-ratio:4/4.3;position:relative;overflow:hidden}
+.bq .ph svg{position:absolute;inset:0;width:100%;height:100%}
+.bq .tagl{position:absolute;top:12px;left:12px;background:var(--card);border-radius:999px;font-size:12px;font-weight:700;padding:5px 10px}
+.bq .body{padding:16px 16px 18px;display:grid;gap:10px}
+.bq .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bq .price{font-family:Fraunces,serif;font-size:26px}
+.sizes{display:flex;gap:6px}
+.sizes button{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:transparent;font-weight:700}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bq .desc{font-size:14px;color:var(--ink-2)}
+
+/* order */
+#zamow{background:var(--paper);border-block:1px solid var(--line)}
+.order{display:grid;gap:22px;margin-top:26px}
+.order>*,.feat-grid>*,.bilet>*,.wreath>*{min-width:0}
+@media (min-width:900px){.order{grid-template-columns:1.25fr .75fr;align-items:start}}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.steps span{flex:1;height:5px;border-radius:4px;background:var(--line);transition:.3s}
+.steps span.on{background:var(--accent)}
+.panel{padding:20px}
+.panel h3{margin-bottom:6px}
+.pick{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.pick::-webkit-scrollbar{display:none}
+.pick button{flex:0 0 112px;border:2px solid var(--line);border-radius:18px;background:var(--card);padding:6px 6px 10px;text-align:center;font-size:12.5px;font-weight:700;scroll-snap-align:start}
+.pick button svg{width:100%;height:96px;display:block}
+.pick button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.seg{display:flex;background:var(--bg);border-radius:14px;padding:4px;gap:4px;margin:6px 0 14px}
+.seg button{flex:1;border:0;background:transparent;border-radius:11px;padding:10px;font-weight:700;font-size:14px;min-height:44px}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:var(--shadow)}
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:0 0 66px;border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:8px 4px;display:grid;gap:0;text-align:center;min-height:70px}
+.days button small{font-size:11px;color:var(--ink-2);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.days button b{font-family:Fraunces,serif;font-size:24px;font-weight:500;line-height:1.1}
+.days button[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:var(--bg)}
+.days button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px}
+.slots button{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:9px 4px;display:grid;line-height:1.25;min-height:56px}
+.slots button b{font-size:16px}
+.slots button small{font-size:11px;color:var(--ok);font-weight:700}
+.slots button.few small{color:var(--warn)}
+.slots button[disabled]{opacity:.35;text-decoration:line-through}
+.slots button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card))}
+.nav-row{display:flex;gap:10px;justify-content:space-between;margin-top:18px}
+.summary{padding:20px;position:sticky;top:80px}
+.summary .sum-ph{height:170px;border-radius:16px;overflow:hidden;background:var(--bg);margin-bottom:14px;display:grid;place-items:center}
+.summary .sum-ph svg{height:100%}
+.summary dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.summary dt{color:var(--ink-2)}
+.summary dd{margin:0;text-align:right;font-weight:600}
+.summary .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);margin-top:14px;padding-top:12px}
+.summary .total b{font-family:Fraunces,serif;font-size:30px;font-weight:500}
+.helper{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 8px}
+.helper button{font-size:12.5px;padding:6px 10px;min-height:34px}
+
+/* confirmation */
+.conf{padding:22px;text-align:center}
+.conf .num{font-family:Fraunces,serif;font-size:34px;margin:6px 0}
+.qr{width:164px;height:164px;margin:14px auto;padding:10px;background:#fff;border-radius:14px;display:grid;place-items:center}
+.qr img,.qr canvas{width:144px!important;height:144px!important}
+.timeline{list-style:none;margin:22px 0 0;padding:0;text-align:left;display:grid;gap:0}
+.timeline li{display:grid;grid-template-columns:28px 1fr;gap:12px;padding-bottom:16px;position:relative;opacity:.4;transition:opacity .4s}
+.timeline li::before{content:"";position:absolute;left:13px;top:26px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child::before{display:none}
+.timeline li.done,.timeline li.now{opacity:1}
+.timeline .b{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;background:var(--card)}
+.timeline li.done .b{background:var(--ok);border-color:var(--ok);color:#fff}
+.timeline li.now .b{border-color:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 20%,transparent);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--accent) 6%,transparent)}}
+.timeline b{display:block}
+.timeline small{color:var(--ink-2)}
+.polaroid{background:#fff;padding:10px 10px 36px;border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,.18);transform:rotate(-2deg);width:min(240px,100%);margin:10px 0 12px;position:relative;color:#333}
+.polaroid svg{width:100%;height:auto;display:block;background:#efe6d6;border-radius:2px}
+.polaroid span{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-family:Fraunces,serif;font-style:italic;font-size:14px}
+.cal-links{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+
+/* features */
+.feat-grid{display:grid;gap:18px;margin-top:28px}
+@media (min-width:900px){.feat-grid{grid-template-columns:1fr 1fr}}
+.bilet{display:grid;gap:20px;margin-top:26px}
+@media (min-width:900px){.bilet{grid-template-columns:1fr 1fr;align-items:center}}
+.ticket{aspect-ratio:1.45;border-radius:10px;padding:22px;position:relative;color:#3a2a19;
+  background:
+   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .12 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+   linear-gradient(135deg,#d9b88f,#c69d6f);
+  box-shadow:0 20px 40px rgba(60,40,15,.25);transform:rotate(-1.5deg);display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end;max-width:460px;margin:0 auto;width:100%}
+.ticket .txt{font-family:Fraunces,serif;font-style:italic;font-size:clamp(16px,4.4vw,21px);line-height:1.35;align-self:center;white-space:pre-line}
+.ticket .qrmini{width:84px;height:84px;background:#fff;border-radius:8px;padding:6px;display:grid;place-items:center}
+.ticket .qrmini img,.ticket .qrmini canvas{width:72px!important;height:72px!important}
+.ticket .sig{position:absolute;left:22px;bottom:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.ticket .hole{position:absolute;top:12px;right:12px;width:12px;height:12px;border-radius:50%;background:var(--bg);box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+.voice{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.voice audio{width:100%;margin-top:8px}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.phone{width:min(300px,100%);margin:0 auto;border-radius:38px;padding:12px;background:#111;box-shadow:var(--shadow)}
+.phone .scr{background:#f4f4f6;border-radius:28px;min-height:330px;padding:14px 12px;color:#111;font:14px/1.4 -apple-system,system-ui,sans-serif}
+.phone .who{text-align:center;font-size:12px;color:#777;margin-bottom:10px}
+.bubble{background:#e5e5ea;border-radius:18px;padding:10px 13px;max-width:88%;margin-bottom:8px;animation:pop .35s}
+.bubble.me{background:#3478f6;color:#fff;margin-left:auto}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.imien-res{margin-top:12px;font-size:15px}
+.imien-res b{font-family:Fraunces,serif;font-size:24px;font-weight:500}
+
+.wreath{display:grid;gap:20px;margin-top:26px}
+@media (min-width:900px){.wreath{grid-template-columns:1fr 1fr;align-items:center}}
+.wreath-art{background:var(--card);border-radius:22px;border:1px solid var(--line);padding:10px}
+.wreath-art svg{width:100%;height:auto;display:block}
+.colors{display:flex;gap:8px;margin-bottom:14px}
+.colors button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line)}
+.colors button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+
+.tiers{display:grid;gap:16px;margin-top:26px}
+@media (min-width:760px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{padding:22px;display:grid;gap:10px;align-content:start}
+.tier .p{font-family:Fraunces,serif;font-size:34px}
+.tier ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:14.5px}
+.tier.hi{background:var(--leaf);color:var(--bg);border-color:var(--leaf)}
+.tier.hi ul{color:color-mix(in srgb,var(--bg) 80%,transparent)}
+
+.revs{display:grid;gap:14px;margin-top:22px}
+@media (min-width:760px){.revs{grid-template-columns:repeat(3,1fr)}}
+.rev{padding:18px;font-size:15px}
+.rev .st{color:#e0a52a;letter-spacing:2px}
+.rev small{color:var(--ink-2)}
+.about{display:grid;gap:24px}
+@media (min-width:900px){.about{grid-template-columns:1fr 1fr;align-items:center}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.stats b{font-family:Fraunces,serif;font-size:28px;font-weight:500;display:block}
+.stats small{font-size:12px;color:var(--ink-2)}
+
+.visit{display:grid;gap:18px;margin-top:22px}
+@media (min-width:900px){.visit{grid-template-columns:1fr 1fr}}
+.hours{padding:20px}
+.hours table{width:100%;border-collapse:collapse;font-size:15px}
+.hours td{padding:7px 0;border-bottom:1px dashed var(--line)}
+.hours td:last-child{text-align:right;font-weight:600}
+.hours tr.today td{color:var(--accent);font-weight:700}
+.map{border-radius:22px;overflow:hidden;border:1px solid var(--line);min-height:240px}
+.map svg{width:100%;height:100%;display:block}
+
+footer{background:var(--leaf);color:var(--bg);padding-block:40px calc(100px + env(safe-area-inset-bottom,0px));font-size:14px}
+footer .wrap{display:grid;gap:10px}
+footer .logo{color:var(--bg)}
+
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .3s}
+.dock.show{transform:none}
+.dock p{flex:1;font-size:13px;line-height:1.3}
+.dock p b{font-size:14.5px}
+@media (min-width:900px){.dock{display:none}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+.vhero{position:relative;height:calc(100svh - 62px);min-height:520px;overflow:hidden;display:grid;align-items:end;color:#fff;background:#1b2a21}
+.vhero video,.vhero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vhero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,14,.15) 0%,rgba(10,20,14,.25) 45%,rgba(10,20,14,.82) 100%)}
+.vhero .in{position:relative;z-index:2;padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
+.vhero .kicker{color:rgba(255,255,255,.8)}
+.vhero h1{font-size:clamp(46px,12vw,104px);font-weight:400;margin-top:8px}
+.vhero h1 em{font-style:italic;color:#c9d0ff}
+.vhero .lead{color:rgba(255,255,255,.88);font-size:17px}
+.vhero .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6)}
+.vhero .live{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;margin-bottom:16px}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 0 12px;margin-top:22px;scrollbar-width:none}
+.gallery::-webkit-scrollbar{display:none}
+.gallery figure{flex:0 0 min(78%,340px);margin:0;aspect-ratio:3/4;border-radius:20px;overflow:hidden;position:relative;scroll-snap-align:start;background:var(--paper)}
+.gallery figure img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery figcaption{position:absolute;left:12px;bottom:12px;background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.pick button .pw{position:relative;height:96px;border-radius:12px;overflow:hidden}
+.pick button .pw svg{height:96px}
+.sum-ph{position:relative}
+.polaroid .pp{position:relative;aspect-ratio:4/4.3;overflow:hidden;border-radius:2px;background:#efe6d6}
+.polaroid .pp svg{position:absolute;inset:0;height:100%}
+
+.advisor{display:grid;gap:18px;margin-top:26px}
+.advisor>*{min-width:0}
+@media (min-width:900px){.advisor{grid-template-columns:.9fr 1.1fr;align-items:stretch}}
+.advice{overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.advice .ph{position:relative;aspect-ratio:4/3;background:var(--bg);overflow:hidden}
+.advice .ph svg{position:absolute;inset:0;width:100%;height:100%}
+.advice .ph .match{position:absolute;top:12px;left:12px;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;z-index:2}
+.advice .bd{padding:18px;display:grid;gap:10px;align-content:start}
+.advice .why{font-size:15px;color:var(--ink-2)}
+.advice .alt{display:flex;gap:10px;align-items:center;border-top:1px dashed var(--line);padding-top:12px;font-size:14px}
+.advice .alt .t{width:54px;height:54px;border-radius:12px;overflow:hidden;position:relative;flex:none;background:var(--bg)}
+.advice .alt .t svg{position:absolute;inset:0;width:100%;height:100%}
+.advice{animation:none}.advice.flash .ph img{animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0;transform:scale(1.04)}}
+</style>
+
+</head><body>
+<div class="demo-bar">Wersja demonstracyjna · Ostróżka to fikcyjna pracownia, zamówienia są symulowane</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Ostróżka, strona główna">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 30V9" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/><g fill="var(--accent)"><circle cx="16" cy="6" r="3.2"/><circle cx="12" cy="11.5" r="3"/><circle cx="20" cy="12" r="3"/><circle cx="12.5" cy="18" r="2.6"/><circle cx="19.5" cy="18.5" r="2.6"/></g><path d="M16 24c-4 0-7-2-8-5 4 0 7 2 8 5z" fill="var(--leaf-2)"/></svg>
+      Ostróżka
+    </a>
+    <nav class="nav" aria-label="Główna">
+      <a href="#bukiety">Bukiety</a><a href="#zamow">Zamów</a><a href="#bilecik">Bilecik z głosem</a><a href="#imieniny">Imieniny</a><a href="#wience">Wieńce</a><a href="#firmy">Dla firm</a><a href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn" id="themeBtn" aria-label="Zmień motyw jasny/ciemny">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="btn sm" href="#zamow">Zamów</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="vhero">
+  <img class="poster" src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1400&q=70" alt="" onerror="this.remove()">
+  <video autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1400&q=70">
+    <source src="https://assets.mixkit.co/videos/49066/49066-720.mp4" type="video/mp4">
+    <source src="https://assets.mixkit.co/videos/49066/49066-360.mp4" type="video/mp4">
+    <source src="https://assets.mixkit.co/videos/49067/49067-720.mp4" type="video/mp4">
+  </video>
+  <div class="wrap in">
+    <span class="live"><span class="dot"></span> <span id="liveTxt">Najbliższy odbiór: dziś</span></span>
+    <div class="kicker">Pracownia kwiatów · Łódź</div>
+    <h1>Ułożymy go <em>na dziś.</em></h1>
+    <p class="lead">Zamów w minutę, wybierz godzinę odbioru, a zanim bukiet wyjdzie z pracowni – dostaniesz jego zdjęcie do akceptacji.</p>
+    <div class="hero-cta" style="justify-content:flex-start"><a class="btn" href="#zamow">Zamów na dziś</a><a class="btn ghost" href="#dobierz">Dobierz bukiet ↓</a></div>
+  </div>
+</div>
+<div class="season">
+  <div class="wrap">
+    <p><b>Wszystkich Świętych · 1 listopada</b><br>Stroiki, wiązanki i znicze z dostawą na łódzkie cmentarze. Zamówienia do <span id="seasonDeadline">30 października</span>.</p>
+    <a class="btn sm" href="#wience">Zamów stroik</a>
+  </div>
+</div>
+
+<!-- DOBIERZ -->
+<section id="dobierz" style="background:var(--paper);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker reveal">Doradca bukietów</div>
+    <h2 class="reveal">Nie wiesz, co wybrać? Dobierzemy w 10 sekund.</h2>
+    <p class="lead reveal">Trzy pytania – i pokazujemy bukiet, który florystka poleciłaby Ci przy ladzie.</p>
+    <div class="advisor">
+      <div class="card panel">
+        <div class="field"><label>Dla kogo?</label><div class="helper" id="aWho">
+          <button class="chip" data-v="mama">Dla mamy</button><button class="chip" data-v="partner">Dla ukochanej osoby</button><button class="chip" data-v="przyjaciolka">Dla przyjaciółki</button><button class="chip" data-v="wspol">Dla współpracownika</button><button class="chip" data-v="pocieszenie">Na pocieszenie</button></div></div>
+        <div class="field"><label>Jaki klimat?</label><div class="helper" id="aMood">
+          <button class="chip" data-v="delikatnie">Delikatnie</button><button class="chip" data-v="wyraziscie">Wyraziście</button><button class="chip" data-v="klasycznie">Klasycznie</button><button class="chip" data-v="polnie">Polnie, naturalnie</button></div></div>
+        <div class="field" style="margin:0"><label for="aBudget">Budżet: do <b id="aBudgetV">220 zł</b></label>
+          <input type="range" id="aBudget" min="99" max="340" step="10" value="220" style="accent-color:var(--accent);padding:0;border:0;background:none"></div>
+      </div>
+      <div class="card advice" id="advice" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUKIETY -->
+<section id="bukiety">
+  <div class="wrap">
+    <div class="kicker reveal">Bukiety tygodnia</div>
+    <h2 class="reveal">Na jaką okazję?</h2>
+    <p class="lead reveal">Co tydzień układamy sześć bukietów z tego, co najpiękniejsze na giełdzie. Każdy w trzech rozmiarach.</p>
+    <div class="occ" id="occ" role="group" aria-label="Okazje"></div>
+    <div class="grid-b" id="grid"></div>
+  </div>
+</section>
+
+<!-- ZAMÓWIENIE -->
+<section id="zamow">
+  <div class="wrap">
+    <div class="kicker">Szybkie zamówienie</div>
+    <h2>Trzy kroki. Około minuty.</h2>
+    <p class="lead">Wybierasz bukiet, dzień i godzinę. Widzisz, ile miejsc zostało na daną godzinę – rezerwujemy je dla Ciebie od razu.</p>
+
+    <div class="order">
+      <div class="card panel" id="orderPanel">
+        <div class="steps" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+
+        <div data-step="1">
+          <h3>1. Bukiet</h3>
+          <p class="muted" style="font-size:14px">Przesuń, aby zobaczyć wszystkie.</p>
+          <div class="pick" id="pick"></div>
+          <div class="field"><label>Rozmiar</label>
+            <div class="seg" id="sizeSeg"><button data-s="S">S</button><button data-s="M">M</button><button data-s="L">L</button></div>
+          </div>
+          <label style="display:flex;gap:10px;align-items:center;font-size:15px;font-weight:600"><input type="checkbox" id="addCard" style="width:20px;height:20px"> Bilecik z głosem (+9 zł)</label>
+          <div class="nav-row"><span></span><button class="btn" data-next>Dalej: termin</button></div>
+        </div>
+
+        <div data-step="2" hidden>
+          <h3>2. Kiedy i jak?</h3>
+          <div class="seg" id="modeSeg"><button data-m="odbior" aria-pressed="true">Odbiór w pracowni</button><button data-m="dostawa" aria-pressed="false">Dostawa (Łódź +19 zł)</button></div>
+          <div class="days" id="days"></div>
+          <div class="slots" id="slots"></div>
+          <p class="muted" style="font-size:13px;margin-top:10px" id="slotNote"></p>
+          <div class="field" id="addrField" hidden style="margin-top:12px"><label for="addr">Adres dostawy</label><input id="addr" placeholder="ulica, numer, Łódź" autocomplete="street-address"></div>
+          <div class="nav-row"><button class="btn ghost" data-prev>Wstecz</button><button class="btn" data-next id="toStep3" disabled>Dalej: dane</button></div>
+        </div>
+
+        <div data-step="3" hidden>
+          <h3>3. Twoje dane</h3>
+          <div class="field"><label for="fn">Imię</label><input id="fn" autocomplete="given-name" placeholder="np. Kasia"></div>
+          <div class="field"><label for="ph">Telefon (na SMS z potwierdzeniem)</label><input id="ph" inputmode="tel" autocomplete="tel" placeholder="600 000 000"></div>
+          <div class="field"><label for="cardTxt">Tekst na bilecik</label>
+            <div class="helper" id="cardHelper"></div>
+            <textarea id="cardTxt" rows="3" placeholder="Napisz kilka słów albo skorzystaj z podpowiedzi"></textarea>
+          </div>
+          <div class="seg" id="payPick"><button aria-pressed="true">BLIK</button><button aria-pressed="false">Przy odbiorze</button></div>
+          <div class="nav-row"><button class="btn ghost" data-prev>Wstecz</button><button class="btn" id="placeOrder">Zamawiam</button></div>
+        </div>
+
+        <div id="confirm" hidden></div>
+      </div>
+
+      <aside class="card summary" aria-live="polite">
+        <div class="sum-ph" id="sumPh"></div>
+        <dl>
+          <dt>Bukiet</dt><dd id="sBq">–</dd>
+          <dt>Rozmiar</dt><dd id="sSz">–</dd>
+          <dt>Termin</dt><dd id="sWhen">wybierz</dd>
+          <dt>Sposób</dt><dd id="sMode">odbiór</dd>
+          <dt>Dodatki</dt><dd id="sAdd">–</dd>
+        </dl>
+        <div class="total"><span class="muted">Razem</span><b id="sTotal">0 zł</b></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- BILECIK -->
+<section id="bilecik">
+  <div class="wrap">
+    <div class="kicker reveal">Tylko u nas</div>
+    <h2 class="reveal">Bilecik, który mówi Twoim głosem.</h2>
+    <p class="lead reveal">Nagraj kilka słów. Na bileciku drukujemy kod QR – odbiorca skanuje go telefonem i słyszy Ciebie. Nie wiesz, co napisać? Podpowiemy.</p>
+    <div class="bilet">
+      <div class="ticket" aria-label="Podgląd bileciku">
+        <span class="hole"></span>
+        <div class="txt" id="tkTxt">Wszystkiego, co najpiękniejsze.
+– Twoja M.</div>
+        <div class="qrmini" id="tkQr"></div>
+        <span class="sig">Ostróżka · posłuchaj mnie</span>
+      </div>
+      <div class="card panel">
+        <div class="field"><label>Ton</label>
+          <div class="helper" id="tone"></div>
+        </div>
+        <div class="field"><label for="tkInput">Treść</label><textarea id="tkInput" rows="3"></textarea></div>
+        <button class="btn ghost sm" id="tkNext">Inna propozycja</button>
+        <hr style="border:0;border-top:1px dashed var(--line);margin:18px 0">
+        <div class="field" style="margin:0"><label>Wiadomość głosowa</label>
+          <div class="voice">
+            <span class="btn sm file-btn">Nagraj lub wybierz nagranie<input type="file" accept="audio/*" capture id="voiceFile" aria-label="Nagraj wiadomość głosową"></span>
+            <span class="muted" style="font-size:13px" id="voiceInfo">do 30 sekund</span>
+          </div>
+          <audio id="voicePlay" controls hidden></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMIENINY -->
+<section id="imieniny" style="background:var(--paper);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker reveal">Przypominajka imieninowa</div>
+    <h2 class="reveal">Nie zapomnisz już o imieninach.</h2>
+    <p class="lead reveal">Wpisz imię bliskiej osoby. Sprawdzimy datę imienin i trzy dni wcześniej wyślemy SMS z gotowym bukietem – zamówisz jednym „TAK”.</p>
+    <div class="feat-grid">
+      <div class="card panel">
+        <div class="field"><label for="imName">Imię</label><input id="imName" placeholder="np. Katarzyna, Andrzej, Teresa" autocomplete="off"></div>
+        <div class="field" id="imDateF" hidden><label for="imDate">Nie znamy tego imienia – podaj datę</label><input type="date" id="imDate"></div>
+        <div class="imien-res" id="imRes" aria-live="polite"><span class="muted">Spróbuj: Katarzyna (25 listopada) albo Andrzej (30 listopada).</span></div>
+        <div class="field" style="margin-top:14px"><label for="imPh">Twój telefon</label><input id="imPh" inputmode="tel" placeholder="600 000 000"></div>
+        <button class="btn" id="imGo" disabled>Ustaw przypomnienie</button>
+      </div>
+      <div class="phone" aria-label="Podgląd wiadomości SMS"><div class="scr" id="sms"><div class="who">Ostróżka · SMS</div><div class="bubble">Tu pojawi się przypomnienie 🌷</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WIEŃCE -->
+<section id="wience">
+  <div class="wrap">
+    <div class="kicker reveal">Wieńce, wiązanki, stroiki</div>
+    <h2 class="reveal">Szarfa – zobacz, zanim zamówisz.</h2>
+    <p class="lead reveal">Wpisz napis, a podgląd pokaże, jak będzie wyglądał. Dostarczamy na łódzkie cmentarze i do domów pogrzebowych, w ciszy i na czas.</p>
+    <div class="wreath">
+      <div class="wreath-art" id="wreathArt"></div>
+      <div class="card panel">
+        <div class="field"><label>Rodzaj</label>
+          <div class="seg" id="wType"><button data-p="249" aria-pressed="true">Wieniec</button><button data-p="169" aria-pressed="false">Wiązanka</button><button data-p="119" aria-pressed="false">Stroik</button></div>
+        </div>
+        <div class="field"><label for="w1">Napis – lewa wstęga</label><input id="w1" maxlength="34" value="Ukochanej Mamie"></div>
+        <div class="field"><label for="w2">Napis – prawa wstęga</label><input id="w2" maxlength="34" value="Córka z rodziną"></div>
+        <div class="field"><label>Kolor wstęgi</label>
+          <div class="colors" id="wColor">
+            <button style="background:#f6f3ec" data-c="#f6f3ec" data-t="#3b3325" aria-label="Biała" aria-pressed="true"></button>
+            <button style="background:#4a3a72" data-c="#4a3a72" data-t="#efe6c9" aria-label="Fioletowa" aria-pressed="false"></button>
+            <button style="background:#1d1d1f" data-c="#1d1d1f" data-t="#d8c48a" aria-label="Czarna" aria-pressed="false"></button>
+            <button style="background:#2b4a37" data-c="#2b4a37" data-t="#efe6c9" aria-label="Zielona" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div class="field"><label for="wWhere">Dostawa</label>
+          <select id="wWhere"><option>Cmentarz Doły</option><option>Cmentarz Zarzew</option><option>Stary Cmentarz (ul. Ogrodowa)</option><option>Cmentarz na Mani</option><option>Cmentarz Szczecińska</option><option>Dom pogrzebowy – podam adres</option><option>Odbiór w pracowni</option></select>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span><span class="muted" style="font-size:13px">od</span> <b style="font-family:Fraunces,serif;font-size:30px;font-weight:500" id="wPrice">249 zł</b></span>
+          <button class="btn" id="wOrder">Zamów z tą szarfą</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRMY -->
+<section id="firmy" style="background:var(--paper);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker reveal">Kwiaty dla firm</div>
+    <h2 class="reveal">Świeże kwiaty co tydzień. Bez pamiętania.</h2>
+    <p class="lead reveal">Recepcje, gabinety, restauracje, hotele. Przywozimy, wymieniamy, zabieramy przekwitłe. Jedna faktura miesięcznie.</p>
+    <div class="tiers">
+      <div class="card tier"><span class="kicker">Recepcja</span><span class="p">149 zł<small style="font-size:15px" class="muted"> / tydz.</small></span><ul><li>1 kompozycja na ladę</li><li>wymiana co poniedziałek</li><li>faktura zbiorcza</li></ul><button class="btn ghost" data-firm="Recepcja">Zapytaj o termin</button></div>
+      <div class="card tier hi"><span class="kicker" style="color:inherit;opacity:.8">Biuro · najczęściej wybierany</span><span class="p">279 zł<small style="font-size:15px;opacity:.8"> / tydz.</small></span><ul><li>3 kompozycje + 1 duża</li><li>pielęgnacja roślin doniczkowych</li><li>bukiety na urodziny pracowników −15%</li></ul><button class="btn" data-firm="Biuro" style="background:var(--bg);color:var(--leaf);box-shadow:none">Zapytaj o termin</button></div>
+      <div class="card tier"><span class="kicker">Hotel i restauracja</span><span class="p">wycena</span><ul><li>dekoracje stołów i holu</li><li>wymiana 2× w tygodniu</li><li>dekoracje na wydarzenia</li></ul><button class="btn ghost" data-firm="Hotel">Umów oględziny</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- O NAS -->
+<section id="o-nas">
+  <div class="wrap about">
+    <div>
+      <div class="kicker reveal">O pracowni</div>
+      <h2 class="reveal">Mała pracownia, duże serce do zieleni.</h2>
+      <p class="lead reveal">Ostróżka to dwie florystki i jeden rower dostawczy. Kwiaty kupujemy trzy razy w tygodniu, a bukiety układamy dopiero po zamówieniu – dlatego stoją dłużej.</p>
+      <div class="gallery"><figure><img loading="lazy" src="https://images.unsplash.com/photo-1642751652611-bb9a7cad58a3?auto=format&fit=crop&w=700&q=70" alt="Układanie na zamówienie" onerror="this.parentElement.remove()"><figcaption>Układanie na zamówienie</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1685613858397-64f79a0f3603?auto=format&fit=crop&w=700&q=70" alt="Giełda – 3 razy w tygodniu" onerror="this.parentElement.remove()"><figcaption>Giełda – 3 razy w tygodniu</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1523308458373-c6f61ae1fd21?auto=format&fit=crop&w=700&q=70" alt="Sezonowe kwiaty" onerror="this.parentElement.remove()"><figcaption>Sezonowe kwiaty</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1558879787-4c4aea1fbb83?auto=format&fit=crop&w=700&q=70" alt="Kompozycje do wazonu" onerror="this.parentElement.remove()"><figcaption>Kompozycje do wazonu</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=700&q=70" alt="Dla firm i recepcji" onerror="this.parentElement.remove()"><figcaption>Dla firm i recepcji</figcaption></figure></div>
+      <div class="stats reveal"><div><b>7 dni</b><small>gwarancja świeżości</small></div><div><b>2 h</b><small>od zamówienia do odbioru</small></div><div><b>0 zł</b><small>dostawa od 250 zł</small></div></div>
+    </div>
+    <div>
+      <span class="demo-tag">Przykładowe opinie · firma fikcyjna</span>
+      <div class="revs" style="grid-template-columns:1fr">
+        <div class="card rev"><div class="st">★★★★★</div><p>„Dostałam zdjęcie bukietu, zanim wyjechał. Poprosiłam o więcej zieleni – poprawili w 10 minut.”</p><small>Marta · Bałuty</small></div>
+        <div class="card rev"><div class="st">★★★★★</div><p>„Zamówiłem o 13:00, odebrałem o 15:30. Bilecik z moim głosem – żona była wzruszona.”</p><small>Paweł · Widzew</small></div>
+        <div class="card rev"><div class="st">★★★★★</div><p>„Szarfa dokładnie taka jak na podglądzie. Dostawa na Doły bez żadnego telefonu z mojej strony.”</p><small>Jolanta · Polesie</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" style="padding-top:0">
+  <div class="wrap">
+    <div class="kicker">Dojazd i godziny</div>
+    <h2>Zajrzyj do pracowni.</h2>
+    <div class="visit">
+      <div class="card hours">
+        <p style="margin-bottom:12px" id="openNow"></p>
+        <table id="hoursT"></table>
+        <p class="muted" style="margin-top:14px;font-size:14px">ul. Przykładowa 12, 91-000 Łódź (adres fikcyjny)<br>tel. 42 000 00 00 · parking od podwórza</p>
+      </div>
+      <div class="map" aria-label="Mapa poglądowa">
+        <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="260" fill="var(--paper)"/>
+          <g stroke="var(--line)" stroke-width="14" fill="none" stroke-linecap="round"><path d="M-10 70H410"/><path d="M-10 190H410"/><path d="M90 -10V270"/><path d="M250 -10V270"/><path d="M330 -10L380 270"/></g>
+          <g stroke="var(--line)" stroke-width="5" fill="none"><path d="M-10 130H410"/><path d="M170 -10V270"/></g>
+          <rect x="190" y="88" width="45" height="30" rx="4" fill="color-mix(in srgb,var(--sage) 45%,transparent)"/>
+          <rect x="100" y="140" width="60" height="42" rx="4" fill="color-mix(in srgb,var(--sage) 45%,transparent)"/>
+          <text x="20" y="62" font-size="11" fill="var(--ink-2)" font-family="Manrope">ul. Przykładowa</text>
+          <text x="258" y="250" font-size="11" fill="var(--ink-2)" font-family="Manrope">Piotrkowska →</text>
+          <g transform="translate(210 160)"><circle r="26" fill="var(--accent)" opacity=".18"><animate attributeName="r" values="14;30;14" dur="2.4s" repeatCount="indefinite"/></circle><path d="M0 8c-9-11-14-17-14-24a14 14 0 0 1 28 0c0 7-5 13-14 24z" fill="var(--accent)" transform="translate(0 -10)"/><circle cy="-26" r="5" fill="#fff"/></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">Ostróżka</span>
+    <p style="opacity:.85">Pracownia kwiatów · Łódź · firma fikcyjna stworzona na potrzeby prezentacji. Zamówienia, płatności, SMS-y i statusy są symulowane w przeglądarce. Zdjęcia: Unsplash, wideo: Mixkit (darmowe licencje) – poglądowe, w wersji dla klienta zastępujemy je zdjęciami jego bukietów.</p>
+  </div>
+</footer>
+
+<div class="dock" id="dock"><p><b>Zamów na dziś</b><br><span id="dockTxt">zamówienia do 17:00</span></p><a class="btn sm" href="#zamow">Zamów</a></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2600)}
+
+/* ---------- theme ---------- */
+const savedTheme=store.get("ost-theme",null);if(savedTheme)document.documentElement.dataset.theme=savedTheme;
+$("#themeBtn").onclick=()=>{const cur=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=n;store.set("ost-theme",n)};
+
+/* ---------- flower drawing ---------- */
+function rng(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return((s>>>0)%10000)/10000}}
+const F={
+ stem:(x1,y1,x2,y2,c="#3d6b4c",w=3)=>`<path d="M${x1} ${y1}Q${(x1+x2)/2+(x2-x1)*.2} ${(y1+y2)/2} ${x2} ${y2}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`,
+ rose:(x,y,r,c,d)=>{let s=`<g transform="translate(${x} ${y})"><circle r="${r}" fill="${c}"/><circle r="${r}" fill="url(#shade)"/>`;for(let i=0;i<4;i++){const rr=r*(.85-i*.19);s+=`<path d="M${-rr} 0A${rr} ${rr*.92} 0 1 1 ${rr*.6} ${rr*.75}" stroke="${d}" stroke-width="${Math.max(1.2,r*.07)}" fill="none" stroke-linecap="round" opacity=".75" transform="rotate(${i*67})"/>`}return s+`</g>`},
+ peony:(x,y,r,c,d,R)=>{let s=`<g transform="translate(${x} ${y})">`;for(let k=0;k<3;k++){const n=7+k*2,rr=r*(1-k*.27);for(let i=0;i<n;i++){const a=i/n*360+R()*20+k*13;s+=`<ellipse cx="0" cy="${-rr*.52}" rx="${rr*.42}" ry="${rr*.55}" fill="${k%2?d:c}" opacity="${.92-k*.05}" transform="rotate(${a})"/>`}}return s+`<circle r="${r*.16}" fill="${d}"/></g>`},
+ spike:(x,y,len,c,d,R)=>{let s=`<g>`;s+=F.stem(x,y+len*.1,x+len*.04,y-len*.95,"#3d6b4c",2.4);const n=9;for(let i=0;i<n;i++){const t=i/(n-1),yy=y-t*len*.9,xx=x+t*len*.04+(i%2?-1:1)*(1-t)*len*.07,rr=len*.085*(1-t*.6);s+=`<g transform="translate(${xx} ${yy}) rotate(${R()*70})">`;for(let p=0;p<5;p++)s+=`<ellipse cy="${-rr*.55}" rx="${rr*.42}" ry="${rr*.6}" fill="${p%2?d:c}" transform="rotate(${p*72})"/>`;s+=`<circle r="${rr*.22}" fill="#f4f1ff"/></g>`}return s+`</g>`},
+ tulip:(x,y,r,c,d)=>`<g transform="translate(${x} ${y})"><path d="M${-r} ${-r*.2}C${-r} ${r*.9} ${r} ${r*.9} ${r} ${-r*.2}L${r*.5} ${-r*.95}L0 ${-r*.35}L${-r*.5} ${-r*.95}Z" fill="${c}"/><path d="M${-r*.25} ${-r*.5}C${-r*.35} ${r*.6} ${r*.35} ${r*.6} ${r*.25} ${-r*.5}L0 ${-r*1.05}Z" fill="${d}" opacity=".8"/></g>`,
+ daisy:(x,y,r,c="#fffaf0",d="#e9b632")=>{let s=`<g transform="translate(${x} ${y})">`;for(let i=0;i<14;i++)s+=`<ellipse cy="${-r*.55}" rx="${r*.16}" ry="${r*.5}" fill="${c}" stroke="rgba(0,0,0,.06)" transform="rotate(${i*360/14})"/>`;return s+`<circle r="${r*.3}" fill="${d}"/></g>`},
+ euca:(x1,y1,x2,y2,R)=>{let s=F.stem(x1,y1,x2,y2,"#5b7a68",2);for(let i=1;i<9;i++){const t=i/9,xx=x1+(x2-x1)*t,yy=y1+(y2-y1)*t,r=9-t*4;s+=`<circle cx="${xx+(i%2?r:-r)}" cy="${yy}" r="${r}" fill="${i%3?"#8fb0a0":"#7aa08f"}" stroke="#6a8d7c" stroke-width=".6"/>`}return s},
+ leaf:(x,y,a,l,c="#3f6e50")=>`<path d="M0 0C${l*.3} ${-l*.25} ${l*.75} ${-l*.2} ${l} 0C${l*.75} ${l*.2} ${l*.3} ${l*.25} 0 0Z" fill="${c}" transform="translate(${x} ${y}) rotate(${a})"/>`,
+ berry:(x,y,R,c="#7a1f2b")=>{let s="";for(let i=0;i<5;i++)s+=`<circle cx="${x+(R()-.5)*16}" cy="${y+(R()-.5)*16}" r="3.4" fill="${c}"/>`;return s}
+};
+const DEFS=`<defs><radialGradient id="shade" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></radialGradient>
+<linearGradient id="kraft" x1="0" x2="1"><stop offset="0" stop-color="#b98a58"/><stop offset=".5" stop-color="#d4ad7f"/><stop offset="1" stop-color="#a97b4b"/></linearGradient>
+<filter id="paper"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" result="n"/><feColorMatrix in="n" values="0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .25 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="t"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="t"/></feMerge></filter></defs>`;
+
+const BQ=[
+ {id:"ostrozka",name:"Ostróżka",tag:"Nasz znak",occ:["urodziny","bez","rocznica"],price:[159,219,299],desc:"Niebieskie ostróżki, białe róże, eukaliptus.",pal:{a:"#4d63d8",a2:"#7c8cf0",r:"#f7f2ea",r2:"#dcd2c2",p:"#f3eef9",p2:"#ddd3ef"},mix:"spike"},
+ {id:"jesien",name:"Jesienna Piotrkowska",tag:"Sezon",occ:["bez","urodziny","pocieszenie"],price:[139,199,269],desc:"Rdzawe róże, burgund, owoce dzikiej róży.",pal:{a:"#c4582e",a2:"#e08a55",r:"#9c2f3a",r2:"#6c1d27",p:"#e7a35a",p2:"#c47a33"},mix:"autumn"},
+ {id:"poranek",name:"Poranek w Manufakturze",tag:"Bestseller",occ:["urodziny","imieniny","rocznica"],price:[149,209,289],desc:"Brzoskwiniowe róże i różowe piwonie.",pal:{a:"#f2a07b",a2:"#d9785a",r:"#f6b9a2",r2:"#e18e78",p:"#f2b6c8",p2:"#d987a3"},mix:"peony"},
+ {id:"polna",name:"Polna Łódź",tag:"Lekki",occ:["imieniny","bez","pocieszenie"],price:[99,139,189],desc:"Rumianki, żółte tulipany, trawy.",pal:{a:"#f1c232",a2:"#d9a514",r:"#f1c232",r2:"#d9a514",p:"#fffaf0",p2:"#e9b632"},mix:"field"},
+ {id:"klasyk",name:"Czerwień klasyczna",tag:"Na rocznicę",occ:["rocznica","przeprosiny"],price:[169,239,339],desc:"Czerwone róże i ciemna zieleń.",pal:{a:"#b3122c",a2:"#7d0b1d",r:"#c8162f",r2:"#7d0b1d",p:"#c8162f",p2:"#7d0b1d"},mix:"roses"},
+ {id:"przeprosiny",name:"Cicha zgoda",tag:"Na przeprosiny",occ:["przeprosiny","pocieszenie","imieniny"],price:[149,199,279],desc:"Pudrowy róż, biel i miękka zieleń.",pal:{a:"#f1c9d3",a2:"#d9a2b2",r:"#fbf3ef",r2:"#e3d2c8",p:"#f3cbd6",p2:"#e09db1"},mix:"soft"}
+];
+const PHOTO={"ostrozka": "1558879787-4c4aea1fbb83", "jesien": "1490349368154-73de9c9bc37c", "poranek": "1680563094046-5d846e2c59d1", "polna": "1604137488398-b1d691713d96", "klasyk": "1512056495345-913a0c261dc8", "przeprosiny": "1620752379460-d4adfe02a5ce"};
+const photoUrl=(id,w)=>`https://images.unsplash.com/photo-${PHOTO[id]}?auto=format&fit=crop&w=${w||800}&q=70`;
+const img=(b,w,cls)=>`<img class="${cls||"photo"}" loading="lazy" src="${photoUrl(b.id,w)}" alt="Bukiet ${b.name}" onerror="this.remove()">`;
+const OCC=[["wszystkie","Wszystkie"],["urodziny","Urodziny"],["imieniny","Imieniny"],["rocznica","Rocznica"],["przeprosiny","Przeprosiny"],["pocieszenie","Na pocieszenie"],["bez","Bez okazji"]];
+
+/* bouquet as list of pieces (each piece string + scatter params) */
+function pieces(b,seed){
+ const R=rng(seed||7),P=b.pal,out=[];const cx=200,base=410;
+ const push=(svg,order)=>out.push({svg,order,dx:(R()-.5)*620,dy:-200-R()*260,r:(R()-.5)*90});
+ // greens behind
+ for(let i=0;i<5;i++){const a=-150+i*30+R()*10;const L=110+R()*40;const rad=a*Math.PI/180;push(F.euca(cx,base-40,cx+Math.cos(rad-Math.PI/2+1.57)*0+Math.sin(rad)*L*1.3,base-40-Math.cos(rad)*L*1.6,R),1)}
+ for(let i=0;i<6;i++)push(F.leaf(cx+(R()-.5)*60,base-110-R()*60,-90+(R()-.5)*160,60+R()*30,i%2?"#3f6e50":"#2f5a43"),1);
+ const heads=[[200,190,40],[150,215,34],[250,212,36],[175,160,30],[228,158,30],[120,250,28],[282,248,28],[200,245,34],[160,270,26],[242,272,26]];
+ heads.forEach(([x,y,r],i)=>{x+=(R()-.5)*8;y+=(R()-.5)*8;let s=F.stem(cx+(x-cx)*.15,base-30,x,y+r*.6);
+  const m=b.mix;
+  if(m==="spike"){ if(i<3)s+=F.spike(x,y+r*.6+40,170+R()*40,P.a,P.a2,R); else s+=i%2?F.rose(x,y,r*.8,P.r,P.r2):F.peony(x,y,r*.8,P.p,P.p2,R) }
+  else if(m==="peony"){ s+=i%3===0?F.rose(x,y,r*.85,P.r,P.r2):F.peony(x,y,r,P.p,P.p2,R) }
+  else if(m==="field"){ s+=i%3===0?F.tulip(x,y,r*.7,P.a,P.a2):F.daisy(x,y,r*.95,P.p,P.p2) }
+  else if(m==="roses"){ s+=F.rose(x,y,r*.85,P.r,P.r2) }
+  else if(m==="soft"){ s+=i%2?F.peony(x,y,r*.95,P.p,P.p2,R):F.rose(x,y,r*.8,P.r,P.r2) }
+  else if(m==="autumn"){ s+=i%3===0?F.peony(x,y,r*.9,P.p,P.p2,R):F.rose(x,y,r*.82,i%2?P.r:P.a,i%2?P.r2:P.a2); if(i%4===1)s+=F.berry(x+r,y-r*.4,R,"#b5291f") }
+  push(s,2+i)});
+ // kraft wrap + ribbon front
+ const wrap=`<g filter="url(#paper)"><path d="M90 255L200 470L310 255L280 300L200 285L120 300Z" fill="url(#kraft)"/><path d="M90 255L200 470L150 300Z" fill="#c69d6f"/><path d="M310 255L200 470L250 300Z" fill="#b88b5a"/></g><path d="M168 392Q200 404 232 392" stroke="#f4eee4" stroke-width="7" fill="none"/><path d="M200 398c-22-18-40-14-34-2 6 10 24 6 34 2zM200 398c22-18 40-14 34-2-6 10-24 6-34 2z" fill="#f4eee4"/><path d="M196 400l-14 40M204 400l12 42" stroke="#f4eee4" stroke-width="4" stroke-linecap="round"/>`;
+ out.push({svg:wrap,order:99,dx:0,dy:260,r:0});
+ return out;
+}
+function bouquetSVG(b,seed,bg){
+ const ps=pieces(b,seed);
+ return `<svg viewBox="40 90 320 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bukiet ${b.name}">${DEFS}${bg?`<rect x="40" y="90" width="320" height="400" fill="${bg}"/>`:""}${ps.map(p=>`<g>${p.svg}</g>`).join("")}</svg>`;
+}
+
+/* ---------- dock ---------- */
+(function(){const z=$("#zamow");const upd=()=>{const r=z.getBoundingClientRect();const inZ=r.top<innerHeight*.8&&r.bottom>innerHeight*.2;$("#dock").classList.toggle("show",scrollY>innerHeight*.9&&!inZ)};addEventListener("scroll",upd,{passive:true});upd()})();
+
+/* ---------- dates & slots ---------- */
+const DN=["Nd","Pn","Wt","Śr","Cz","Pt","So"],MN=["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+const HOURS={0:[9,14],1:[8,19],2:[8,19],3:[8,19],4:[8,19],5:[8,19],6:[8,16]};
+const now=new Date();
+function slotsFor(d){const [o,c]=HOURS[d.getDay()];const res=[];const R=rng(d.getFullYear()*400+d.getMonth()*31+d.getDate());
+ for(let h=o+1;h<c;h++)for(const m of[0,30]){const t=new Date(d);t.setHours(h,m,0,0);const cap=4,taken=Math.floor(R()*5);let left=Math.max(0,cap-taken);
+  const tooSoon=t-now<2*3600e3;res.push({h,m,left:tooSoon?0:left,soon:tooSoon})}return res}
+const pad=n=>String(n).padStart(2,"0");
+// first free today
+(function(){const s=slotsFor(now).find(x=>x.left>0);$("#liveTxt").textContent=s?`Najbliższy odbiór: dziś ${s.h}:${pad(s.m)}`:"Na dziś komplet · odbiór od jutra rana";
+ const [,c]=HOURS[now.getDay()];const cut=Math.min(c-2,17);$("#dockTxt").textContent=now.getHours()<cut?`zamówienia na dziś do ${cut}:00`:"na dziś już po czasie – zamów na jutro";
+ const y=now.getFullYear();const dl=new Date(y,9,30);if(now>new Date(y,10,1,23))$(".season").hidden=true})();
+
+/* ---------- bukiety grid ---------- */
+const sizeIdx={S:0,M:1,L:2};
+const order=store.get("ost-order-draft",null)||{bq:"ostrozka",size:"M",card:false,mode:"odbior",day:null,slot:null};
+let occ="wszystkie";
+function renderOcc(){$("#occ").innerHTML=OCC.map(([k,l])=>`<button class="chip" aria-pressed="${k===occ}" data-o="${k}">${l}</button>`).join("");
+ $$("#occ .chip").forEach(b=>b.onclick=()=>{occ=b.dataset.o;renderOcc();$$(".bq").forEach(c=>c.classList.toggle("fade",occ!=="wszystkie"&&!BQ.find(x=>x.id===c.dataset.id).occ.includes(occ)))})}
+function renderGrid(){$("#grid").innerHTML=BQ.map((b,i)=>`<article class="card bq reveal" data-id="${b.id}"><div class="ph" style="background:${i%2?"var(--paper)":"color-mix(in srgb,var(--sage) 22%,var(--paper))"}">${bouquetSVG(b,30+i)}${img(b,700)}<span class="tagl">${b.tag}</span></div>
+ <div class="body"><div class="row"><h3>${b.name}</h3></div><p class="desc">${b.desc}</p><div class="row"><span class="price" data-pr>${b.price[1]} zł</span><div class="sizes" role="group" aria-label="Rozmiar">${["S","M","L"].map(s=>`<button aria-pressed="${s==="M"}" data-s="${s}">${s}</button>`).join("")}</div></div>
+ <button class="btn leaf" data-choose>Wybieram</button></div></article>`).join("");
+ $$(".bq").forEach(card=>{const b=BQ.find(x=>x.id===card.dataset.id);let sz="M";
+  $$(".sizes button",card).forEach(btn=>btn.onclick=()=>{sz=btn.dataset.s;$$(".sizes button",card).forEach(x=>x.setAttribute("aria-pressed",x===btn));$("[data-pr]",card).textContent=b.price[sizeIdx[sz]]+" zł"});
+  $("[data-choose]",card).onclick=()=>{order.bq=b.id;order.size=sz;go(1);renderOrder();$("#zamow").scrollIntoView({behavior:"smooth"});toast(`${b.name} (${sz}) w zamówieniu`)}})}
+renderOcc();renderGrid();
+
+/* ---------- order ---------- */
+let step=1;
+function go(n){step=n;$$("[data-step]").forEach(s=>s.hidden=+s.dataset.step!==n);$$(".steps span").forEach((s,i)=>s.classList.toggle("on",i<n));$("#confirm").hidden=true;$(".steps").hidden=false}
+$$("[data-next]").forEach(b=>b.onclick=()=>{go(step+1);$("#orderPanel").scrollIntoView({behavior:"smooth",block:"start"})});
+$$("[data-prev]").forEach(b=>b.onclick=()=>go(step-1));
+$("#pick").innerHTML=BQ.map((b,i)=>`<button data-id="${b.id}"><div class="pw">${bouquetSVG(b,30+i)}${img(b,300)}</div>${b.name}</button>`).join("");
+$$("#pick button").forEach(b=>b.onclick=()=>{order.bq=b.dataset.id;renderOrder()});
+$$("#sizeSeg button").forEach(b=>b.onclick=()=>{order.size=b.dataset.s;renderOrder()});
+$("#addCard").onchange=e=>{order.card=e.target.checked;renderOrder()};
+$$("#modeSeg button").forEach(b=>b.onclick=()=>{order.mode=b.dataset.m;renderOrder()});
+$$("#payPick button").forEach(b=>b.onclick=()=>$$("#payPick button").forEach(x=>x.setAttribute("aria-pressed",x===b)));
+const days=[];for(let i=0;i<8;i++){const d=new Date(now);d.setDate(d.getDate()+i);d.setHours(0,0,0,0);days.push(d)}
+if(order.day==null||order.day>7)order.day=slotsFor(now).some(s=>s.left>0)?0:1;
+function renderDays(){$("#days").innerHTML=days.map((d,i)=>`<button data-i="${i}" aria-pressed="${i===order.day}"><small>${i===0?"dziś":i===1?"jutro":DN[d.getDay()]}</small><b>${d.getDate()}</b><small>${MN[d.getMonth()].slice(0,3)}</small></button>`).join("");
+ $$("#days button").forEach(b=>b.onclick=()=>{order.day=+b.dataset.i;order.slot=null;renderOrder()})}
+function renderSlots(){const s=slotsFor(days[order.day]);const anyFree=s.some(x=>x.left>0);
+ $("#slots").innerHTML=s.map((x,i)=>{const lbl=x.soon?"za wcześnie":x.left===0?"brak miejsc":x.left===1?"ostatnie miejsce":x.left<=2?`zostały ${x.left}`:"wolne";
+  return `<button data-i="${i}" ${x.left===0?"disabled":""} class="${x.left>0&&x.left<=2?"few":""}" aria-pressed="${order.slot===i}"><b>${x.h}:${pad(x.m)}</b><small>${lbl}</small></button>`}).join("");
+ $$("#slots button").forEach(b=>b.onclick=()=>{order.slot=+b.dataset.i;renderOrder()});
+ $("#slotNote").textContent=anyFree?"Na każdą godzinę układamy maksymalnie 4 bukiety – dlatego pokazujemy, ile miejsc zostało.":"Na ten dzień nie ma już wolnych godzin – wybierz kolejny.";}
+function curBq(){return BQ.find(b=>b.id===order.bq)||BQ[0]}
+function total(){const b=curBq();return b.price[sizeIdx[order.size]]+(order.card?9:0)+(order.mode==="dostawa"?19:0)}
+function whenTxt(){if(order.slot==null)return null;const d=days[order.day],s=slotsFor(d)[order.slot];return `${order.day===0?"dziś":order.day===1?"jutro":DN[d.getDay()]+" "+d.getDate()+" "+MN[d.getMonth()]}, ${s.h}:${pad(s.m)}`}
+function renderOrder(){const b=curBq();
+ $$("#pick button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.id===b.id));
+ $$("#sizeSeg button").forEach(x=>{x.setAttribute("aria-pressed",x.dataset.s===order.size);x.textContent=`${x.dataset.s} · ${b.price[sizeIdx[x.dataset.s]]} zł`});
+ $("#addCard").checked=order.card;
+ $$("#modeSeg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.m===order.mode));$("#addrField").hidden=order.mode!=="dostawa";
+ renderDays();renderSlots();
+ $("#toStep3").disabled=order.slot==null;
+ $("#sumPh").innerHTML=bouquetSVG(b,30+BQ.indexOf(b))+img(b,600);
+ $("#sBq").textContent=b.name;$("#sSz").textContent=order.size;$("#sWhen").textContent=whenTxt()||"wybierz";
+ $("#sMode").textContent=order.mode==="dostawa"?"dostawa":"odbiór";$("#sAdd").textContent=order.card?"bilecik z głosem":"–";
+ $("#sTotal").textContent=total()+" zł";store.set("ost-order-draft",order)}
+renderOrder();
+
+/* card text helper */
+const TONES={
+ "Urodziny":["Wszystkiego, co najpiękniejsze.\n– Twoja M.","Sto lat i jeszcze trochę!\nŚciskam mocno.","Niech ten rok pachnie jak te kwiaty."],
+ "Romantycznie":["Bez okazji. Po prostu dlatego, że jesteś.","Każdy dzień z Tobą to święto.","Dla Ciebie – zawsze."],
+ "Przeprosiny":["Przepraszam. Wiem, że kwiaty nie wystarczą – ale to dopiero początek.","Głupio wyszło. Może kawa i rozmowa?","Masz rację. Przepraszam."],
+ "Podziękowanie":["Dziękuję za wszystko, co robisz.","Bez Ciebie by się nie udało. Dzięki!","Z wdzięcznością – za cierpliwość i serce."],
+ "Kondolencje":["Łączę się w bólu i myślami jestem z Wami.","Wyrazy głębokiego współczucia.","Pozostanie w naszej pamięci."]
+};
+$("#cardHelper").innerHTML=Object.keys(TONES).map(t=>`<button class="chip" data-t="${t}">${t}</button>`).join("");
+$$("#cardHelper .chip").forEach(b=>b.onclick=()=>{const a=TONES[b.dataset.t];$("#cardTxt").value=a[Math.floor(Math.random()*a.length)]});
+
+/* place order */
+$("#placeOrder").onclick=()=>{
+ const fn=$("#fn").value.trim(),ph=$("#ph").value.replace(/\D/g,"");
+ if(!fn){$("#fn").focus();return toast("Podaj imię")}
+ if(ph.length<9){$("#ph").focus();return toast("Podaj 9-cyfrowy numer telefonu")}
+ if(order.mode==="dostawa"&&!$("#addr").value.trim()){go(2);$("#addr").focus();return toast("Podaj adres dostawy")}
+ const b=curBq(),d=days[order.day],s=slotsFor(d)[order.slot];
+ const no="OS-"+pad(d.getDate())+pad(d.getMonth()+1)+"-"+Math.floor(100+Math.random()*899);
+ const start=new Date(d);start.setHours(s.h,s.m,0,0);const end=new Date(start.getTime()+30*60e3);
+ const fmt=t=>t.getFullYear()+pad(t.getMonth()+1)+pad(t.getDate())+"T"+pad(t.getHours())+pad(t.getMinutes())+"00";
+ const gcal="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent((order.mode==="dostawa"?"Dostawa bukietu ":"Odbiór bukietu ")+b.name+" – Ostróżka")+"&dates="+fmt(start)+"/"+fmt(end)+"&details="+encodeURIComponent("Zamówienie "+no+" (demo)");
+ $$("[data-step]").forEach(x=>x.hidden=true);$(".steps").hidden=true;
+ const c=$("#confirm");c.hidden=false;
+ c.innerHTML=`<div class="conf"><span class="demo-tag">Symulacja</span><p class="muted" style="margin-top:10px">Dziękujemy, ${fn.replace(/</g,"")}! Zamówienie przyjęte.</p><div class="num">${no}</div>
+  <p><b>${order.mode==="dostawa"?"Dostawa":"Odbiór"}: ${whenTxt()}</b></p>
+  <div class="qr" id="qrBox" aria-label="Kod QR odbioru"></div>
+  <p class="muted" style="font-size:14px">Pokaż ten kod przy odbiorze. Taki sam przyszedł SMS-em na numer …${ph.slice(-3)}.</p>
+  <div class="cal-links"><a class="btn sm ghost" href="${gcal}" target="_blank" rel="noopener">Dodaj do kalendarza Google</a><button class="btn sm ghost" id="again">Nowe zamówienie</button></div>
+  <ul class="timeline" id="tl">
+   <li><span class="b">✓</span><div><b>Przyjęte</b><small>${pad(now.getHours())}:${pad(now.getMinutes())} · płatność ${$("#payPick [aria-pressed=true]").textContent}</small></div></li>
+   <li><span class="b">2</span><div><b>Układamy bukiet</b><small>florystka: Ola</small></div></li>
+   <li><span class="b">3</span><div><b>Zdjęcie do akceptacji</b><small>zobaczysz bukiet, zanim wyjdzie</small><div id="photoSlot"></div></div></li>
+   <li><span class="b">4</span><div><b>${order.mode==="dostawa"?"W drodze":"Czeka na odbiór"}</b><small>${order.mode==="dostawa"?"kurier rowerowy":"półka z numerem "+no.slice(-3)}</small></div></li>
+   <li><span class="b">5</span><div><b>${order.mode==="dostawa"?"Doręczone":"Odebrane"}</b><small>poprosimy o krótką opinię</small></div></li>
+  </ul><p class="muted" style="font-size:12.5px;margin-top:4px">W demo czas płynie szybciej – kolejne etapy pojawiają się co kilka sekund.</p></div>`;
+ makeQR($("#qrBox"),"OSTROZKA|"+no+"|"+fmt(start),144);
+ $("#again").onclick=()=>{order.slot=null;go(1);renderOrder()};
+ runTimeline(b);
+ c.scrollIntoView({behavior:"smooth",block:"start"});
+ toast("Zamówienie "+no+" przyjęte (demo)");
+};
+function runTimeline(b){const li=$$("#tl li");let i=1;let ver=0;
+ const set=()=>li.forEach((l,k)=>{l.classList.toggle("done",k<i);l.classList.toggle("now",k===i);if(k<i)$(".b",l).textContent="✓"});
+ set();
+ const adv=()=>{if(!document.body.contains(li[0]))return;i++;set();if(i===2)showPhoto();else if(i<li.length)setTimeout(adv,2600)};
+ function showPhoto(){const slot=$("#photoSlot");ver++;
+  slot.innerHTML=`<div class="polaroid"><div class="pp">${bouquetSVG(b,40+ver*7,"#efe6d6")}${ver===1?img(b,500):""}</div><span>${b.name}${ver>1?" · wersja "+ver:""}</span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="okPh">Akceptuję</button><button class="btn sm ghost" id="chPh">Poproszę zmianę</button></div><div id="chOpts" class="helper" style="margin-top:8px" hidden></div>`;
+  $("#okPh").onclick=()=>{slot.innerHTML=`<small style="color:var(--ok);font-weight:700">Zaakceptowane ✓</small>`;i=3;set();setTimeout(adv,2600)};
+  $("#chPh").onclick=()=>{const o=$("#chOpts");o.hidden=false;o.innerHTML=["Więcej zieleni","Jaśniejsze kolory","Bardziej okrągły","Bez eukaliptusa"].map(t=>`<button class="chip">${t}</button>`).join("");
+   $$(".chip",o).forEach(x=>x.onclick=()=>{slot.innerHTML=`<small class="muted">Poprawiamy: „${x.textContent}”…</small>`;toast("Florystka dostała prośbę");setTimeout(showPhoto,2200)})};
+ }
+ setTimeout(adv,2400);
+}
+
+/* QR helper */
+function makeQR(el,text,size){el.innerHTML="";if(window.QRCode){try{new QRCode(el,{text,width:size,height:size,colorDark:"#17271e",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return}catch(e){}}
+ // fallback: decorative pattern (not scannable)
+ const R=rng(text.length*97+text.charCodeAt(text.length-1));let s=`<svg viewBox="0 0 25 25" width="${size}" height="${size}" shape-rendering="crispEdges"><rect width="25" height="25" fill="#fff"/>`;
+ for(let y=0;y<25;y++)for(let x=0;x<25;x++){const f=(x<8&&y<8)||(x>16&&y<8)||(x<8&&y>16);if(!f&&R()>.5)s+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#17271e"/>`}
+ [[0,0],[18,0],[0,18]].forEach(([x,y])=>s+=`<rect x="${x+.5}" y="${y+.5}" width="6" height="6" fill="none" stroke="#17271e"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#17271e"/>`);el.innerHTML=s+"</svg>"}
+
+/* ---------- bilecik ---------- */
+let tone="Urodziny",toneI=0;
+$("#tone").innerHTML=Object.keys(TONES).map(t=>`<button class="chip" aria-pressed="${t===tone}" data-t="${t}">${t}</button>`).join("");
+function setTk(txt){$("#tkInput").value=txt;$("#tkTxt").textContent=txt}
+$$("#tone .chip").forEach(b=>b.onclick=()=>{tone=b.dataset.t;toneI=0;$$("#tone .chip").forEach(x=>x.setAttribute("aria-pressed",x===b));setTk(TONES[tone][0])});
+$("#tkNext").onclick=()=>{toneI=(toneI+1)%TONES[tone].length;setTk(TONES[tone][toneI])};
+$("#tkInput").oninput=e=>$("#tkTxt").textContent=e.target.value||" ";
+setTk(TONES[tone][0]);
+const tkId=Math.random().toString(36).slice(2,8);
+makeQR($("#tkQr"),"https://ostrozka.example/glos/"+tkId,72);
+$("#voiceFile").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const a=$("#voicePlay");a.src=URL.createObjectURL(f);a.hidden=false;$("#voiceInfo").textContent="Nagranie dodane ✓ – kod QR na bileciku je odtworzy";toast("Głos dodany do bileciku")};
+
+/* ---------- imieniny ---------- */
+const IM={anna:[7,26],maria:[8,15],katarzyna:[11,25],małgorzata:[7,16],agnieszka:[1,21],barbara:[12,4],ewa:[12,24],krystyna:[7,24],elżbieta:[11,19],zofia:[5,15],magdalena:[7,22],joanna:[5,30],monika:[5,4],teresa:[10,15],danuta:[1,3],jadwiga:[10,16],dorota:[2,6],halina:[6,26],piotr:[6,29],paweł:[6,29],jan:[6,24],andrzej:[11,30],krzysztof:[7,25],marek:[4,25],michał:[9,29],józef:[3,19],stanisław:[5,8],adam:[12,24],wojciech:[4,23],grzegorz:[3,12],łukasz:[10,18],mateusz:[9,21],jerzy:[4,23],tadeusz:[10,28],kazimierz:[3,4],marcin:[11,11],szymon:[10,28],jakub:[7,25],tomasz:[12,21],mikołaj:[12,6],natalia:[12,1],julia:[5,22],karolina:[11,4],aleksandra:[2,26],wiktoria:[12,23],zuzanna:[8,11],lena:[11,1],marta:[7,29],beata:[5,9],renata:[11,12],iwona:[5,19]};
+let imTarget=null;
+function imLookup(){const raw=$("#imName").value.trim();const k=raw.toLowerCase();$("#imDateF").hidden=true;imTarget=null;
+ if(!raw){$("#imRes").innerHTML=`<span class="muted">Spróbuj: Katarzyna (25 listopada) albo Andrzej (30 listopada).</span>`;return chk()}
+ const v=IM[k];let d;
+ if(v){d=new Date(now.getFullYear(),v[0]-1,v[1]);if(d<new Date(now.getFullYear(),now.getMonth(),now.getDate()))d.setFullYear(d.getFullYear()+1)}
+ else if($("#imDate").value){d=new Date($("#imDate").value+"T00:00");$("#imDateF").hidden=false}
+ else{$("#imDateF").hidden=false;$("#imRes").innerHTML=`<span class="muted">Imię ${raw.replace(/</g,"")} ma kilka dat albo go nie znamy – wybierz dzień.</span>`;return chk()}
+ const diff=Math.round((d-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/864e5);
+ const name=raw.charAt(0).toUpperCase()+raw.slice(1).toLowerCase();
+ imTarget={name,d,diff};
+ $("#imRes").innerHTML=`${name} obchodzi imieniny <b>${d.getDate()} ${MN[d.getMonth()]}</b><br><span class="muted">${diff===0?"to dziś! Zdążysz z bukietem na dziś.":diff===1?"już jutro":"za "+diff+" dni"}${v?" · najpopularniejsza data w kalendarzu":""}</span>`;chk()}
+function chk(){$("#imGo").disabled=!(imTarget&&$("#imPh").value.replace(/\D/g,"").length>=9)}
+$("#imName").oninput=imLookup;$("#imDate").onchange=imLookup;$("#imPh").oninput=chk;
+$("#imGo").onclick=()=>{const t=imTarget;const rem=new Date(t.d);rem.setDate(rem.getDate()-3);const b=BQ[2];
+ const sms=$("#sms");sms.innerHTML=`<div class="who">Ostróżka · ${t.diff<=3?"dziś":rem.getDate()+" "+MN[rem.getMonth()]}, 10:00</div>`;
+ const msgs=[[0,`Dzień dobry! Za ${Math.max(t.diff,0)<=3?Math.max(t.diff,0)+" dni":"3 dni"} (${t.d.getDate()}.${pad(t.d.getMonth()+1)}) imieniny ma ${t.name} 🌷 Proponujemy bukiet „${b.name}” M za ${b.price[1]} zł z odbiorem ${t.d.getDate()}.${pad(t.d.getMonth()+1)} o 15:30. Odpisz TAK, żeby zamówić.`],[1,"TAK"],[0,`Gotowe! Zamówienie OS-${pad(t.d.getDate())}${pad(t.d.getMonth()+1)}-417. Dzień przed odbiorem przyślemy zdjęcie bukietu. Ostróżka`]];
+ msgs.forEach(([me,txt],i)=>setTimeout(()=>{const d=document.createElement("div");d.className="bubble"+(me?" me":"");d.textContent=txt;sms.appendChild(d)},500+i*1300));
+ const list=store.get("ost-imieniny",[]);list.push({n:t.name,d:t.d.toISOString().slice(0,10)});store.set("ost-imieniny",list);
+ toast("Przypomnienie ustawione (demo)")};
+
+/* ---------- wieniec ---------- */
+function wreath(){const c=$("#wColor [aria-pressed=true]");const col=c.dataset.c,tc=c.dataset.t;const type=$("#wType [aria-pressed=true]").textContent;
+ const esc=s=>s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+ const t1=esc($("#w1").value||" "),t2=esc($("#w2").value||" ");const R=rng(5);let g="";
+ const isW=type==="Wieniec",isS=type==="Stroik";
+ if(isS){g+=`<ellipse cx="200" cy="200" rx="130" ry="44" fill="#5a3f28"/>`;for(let i=0;i<40;i++){const a=R()*Math.PI*2,rr=R();g+=F.leaf(200+Math.cos(a)*120*rr,190+Math.sin(a)*36*rr,a*57+R()*40,34+R()*20,i%2?"#2f5a43":"#4a7a5a")}
+  g+=F.rose(160,175,20,"#f6f1e7","#d8cdb8")+F.rose(205,168,24,"#9c2f3a","#6c1d27")+F.rose(248,178,20,"#f6f1e7","#d8cdb8")+`<rect x="188" y="110" width="24" height="56" rx="4" fill="#c62f2f"/><path d="M200 96c6 8 6 12 0 16-6-4-6-8 0-16z" fill="#f2b53a"/>`}
+ else{const rx=isW?120:90,ry=isW?120:70;
+  for(let i=0;i<70;i++){const a=i/70*Math.PI*2;const x=200+Math.cos(a)*rx,y=170+Math.sin(a)*ry;g+=F.leaf(x,y,a*57+80+R()*30,32+R()*14,i%3?"#2f5a43":"#4a7a5a")}
+  if(!isW)g+=`<ellipse cx="200" cy="170" rx="${rx-20}" ry="${ry-16}" fill="#3e6a4d"/>`;
+  [[0,"#f6f1e7","#d8cdb8"],[1,"#f6f1e7","#d8cdb8"],[2,"#9c2f3a","#6c1d27"],[3,"#f6f1e7","#d8cdb8"],[4,"#f6f1e7","#d8cdb8"]].forEach(([i,c1,c2])=>{const a=(200+i*35)*Math.PI/180;g+=F.rose(200+Math.cos(a)*rx*(isW?1:.55),170+Math.sin(a)*ry*(isW?1:.55),isW?20:18,c1,c2)})}
+ const ry0=isS?220:isW?250:215;
+ const rib=(x,ang,txt)=>`<g transform="translate(${x} ${ry0}) rotate(${ang})"><path d="M-17 0H17V176L0 164L-17 176Z" fill="${col}" stroke="rgba(0,0,0,.12)"/><text transform="translate(5 10) rotate(90)" font-family="Fraunces,Georgia,serif" font-style="italic" font-size="${Math.min(15,280/Math.max(10,txt.length))}" fill="${tc}" textLength="${Math.min(150,txt.length*8)}" lengthAdjust="spacingAndGlyphs">${txt}</text></g>`;
+ $("#wreathArt").innerHTML=`<svg viewBox="0 0 400 460" role="img" aria-label="Podgląd: ${type} z szarfą">${DEFS}<rect width="400" height="460" fill="var(--paper)" rx="16"/>${rib(176,12,t1)}${rib(224,-12,t2)}${g}<path d="M176 ${ry0}q24 -18 48 0q-24 16 -48 0z" fill="${col}" stroke="rgba(0,0,0,.15)"/></svg>`;
+ $("#wPrice").textContent=$("#wType [aria-pressed=true]").dataset.p+" zł"}
+$$("#wType button").forEach(b=>b.onclick=()=>{$$("#wType button").forEach(x=>x.setAttribute("aria-pressed",x===b));wreath()});
+$$("#wColor button").forEach(b=>b.onclick=()=>{$$("#wColor button").forEach(x=>x.setAttribute("aria-pressed",x===b));wreath()});
+$("#w1").oninput=wreath;$("#w2").oninput=wreath;wreath();
+$("#wOrder").onclick=()=>toast(`Zamówienie przyjęte (demo): ${$("#wType [aria-pressed=true]").textContent.toLowerCase()} → ${$("#wWhere").value}`);
+$$("[data-firm]").forEach(b=>b.onclick=()=>toast(`Pakiet „${b.dataset.firm}” – oddzwonimy w ciągu godziny (demo)`));
+
+/* ---------- hours ---------- */
+const order7=[1,2,3,4,5,6,0],NAMES={0:"Niedziela",1:"Poniedziałek",2:"Wtorek",3:"Środa",4:"Czwartek",5:"Piątek",6:"Sobota"};
+$("#hoursT").innerHTML=order7.map(d=>`<tr class="${d===now.getDay()?"today":""}"><td>${NAMES[d]}</td><td>${HOURS[d][0]}:00–${HOURS[d][1]}:00</td></tr>`).join("");
+const [o,cl]=HOURS[now.getDay()],h=now.getHours()+now.getMinutes()/60;
+$("#openNow").innerHTML=h>=o&&h<cl?`<span class="dot"></span>&nbsp; <b>Otwarte teraz</b> · do ${cl}:00`:`<span class="dot" style="background:var(--warn);box-shadow:none"></span>&nbsp; <b>Zamknięte</b> · zamówienia online przyjmujemy całą dobę`;
+
+
+/* ---------- doradca ---------- */
+(function(){
+ const ATTR={ostrozka:{m:["delikatnie","klasycznie"],w:["mama","przyjaciolka","wspol"]},jesien:{m:["wyraziscie","polnie"],w:["przyjaciolka","wspol","pocieszenie"]},poranek:{m:["delikatnie"],w:["mama","partner","przyjaciolka"]},polna:{m:["polnie","delikatnie"],w:["przyjaciolka","pocieszenie","wspol"]},klasyk:{m:["klasycznie","wyraziscie"],w:["partner"]},przeprosiny:{m:["delikatnie","klasycznie"],w:["partner","pocieszenie","mama"]}};
+ const WHO={mama:"mamy lubią bukiety, które długo stoją w wazonie",partner:"na wyznanie uczuć sprawdza się mocny, jednoznaczny akcent",przyjaciolka:"przyjaciółkę ucieszy coś radosnego i niebanalnego",wspol:"w biurze najlepiej wypada elegancki, neutralny bukiet",pocieszenie:"na trudny czas – miękkie kolory i dużo zieleni"};
+ const MOOD={delikatnie:"pastelowe, miękkie kolory",wyraziscie:"nasycone, odważne barwy",klasycznie:"ponadczasowe róże i porządna forma",polnie:"lekkość jak z łąki"};
+ const st={who:"mama",mood:"delikatnie",budget:220};
+ const pickChip=(id,key)=>{$$("#"+id+" .chip").forEach(c=>{c.setAttribute("aria-pressed",c.dataset.v===st[key]);c.onclick=()=>{st[key]=c.dataset.v;pickChip(id,key);run()}})};
+ pickChip("aWho","who");pickChip("aMood","mood");
+ $("#aBudget").oninput=e=>{st.budget=+e.target.value;$("#aBudgetV").textContent=st.budget+" zł";run()};
+ function fit(b){let s=-1;b.price.forEach((p,i)=>{if(p<=st.budget)s=i});return s}
+ function run(){
+  const ranked=BQ.map(b=>{const a=ATTR[b.id],f=fit(b);return{b,f,sc:(a.w.includes(st.who)?3:0)+(a.m.includes(st.mood)?2:0)+(f<0?-4:f*.3)}}).sort((x,y)=>y.sc-x.sc);
+  const top=ranked[0],alt=ranked[1],b=top.b,si=top.f<0?0:top.f,sz=["S","M","L"][si];
+  const pct=Math.max(62,Math.min(98,Math.round(70+top.sc*4)));
+  const el=$("#advice");el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");
+  el.innerHTML=`<div class="ph">${bouquetSVG(b,30+BQ.indexOf(b))}${img(b,800)}<span class="match">Dopasowanie ${pct}%</span></div>
+  <div class="bd"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><h3>${b.name} · ${sz}</h3><span style="font-family:Fraunces,serif;font-size:26px">${b.price[si]} zł</span></div>
+  <p class="why">Dlaczego ten? ${WHO[st.who].charAt(0).toUpperCase()+WHO[st.who].slice(1)}, a Ty chcesz: ${MOOD[st.mood]}. ${b.desc}${top.f<0?" <b>Najmniejszy rozmiar jest nieco powyżej budżetu.</b>":""}</p>
+  <button class="btn" id="aOrder">Zamów ten bukiet</button>
+  <div class="alt"><div class="t">${bouquetSVG(alt.b,30+BQ.indexOf(alt.b))}${img(alt.b,200)}</div><div style="flex:1">Druga propozycja: <b>${alt.b.name}</b><br><span class="muted">od ${alt.b.price[0]} zł</span></div><button class="btn sm ghost" id="aAlt">Pokaż</button></div></div>`;
+  $("#aOrder").onclick=()=>{order.bq=b.id;order.size=sz;go(1);renderOrder();$("#zamow").scrollIntoView({behavior:"smooth"});toast(`${b.name} (${sz}) w zamówieniu`)};
+  $("#aAlt").onclick=()=>{const c=document.querySelector(`.bq[data-id="${alt.b.id}"]`);if(c){c.scrollIntoView({behavior:"smooth",block:"center"})}};
+ }
+ run();
+})();
+
+/* ---------- reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+$$(".reveal").forEach(el=>io.observe(el));
+})();
+</script>
+</body></html>
